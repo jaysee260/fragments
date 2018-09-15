@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Fragments</title>
+</head>
+<body>
+
+  <main>
+
+    <form action="POST" id="new-fragment-form">
+      <header>
+        <h3>Create a new Fragment</h3>
+      </header>
+
+      <div>
+        <p>
+          <label for="title">Title</label>
+        </p>
+        <p>
+          <input type="text" name="title" id="title" placeholder="(optional)">
+        </p>
+      </div>
+
+      <div>
+        <p>
+          <label for="body">Body</label>
+        </p>
+        <p>
+          <textarea name="body" id="body" cols="30" rows="10" required></textarea>
+        </p>
+      </div>
+
+      <div>
+        <p>
+          <label for="tags">Tags</label>
+        </p>
+        <p>
+          <input type="text" name="tags" id="tags" placeholder="to categorize fragments" />
+        </p>
+      </div>
+
+      <input type="submit" value="Save">
+
+    </form>
+
+  </main>
+
+  <script>
+    (function() {
+      // All input fields must have an id.
+      function getFormDataAsJSON(form) {
+        let json = {};
+
+        for (let i = 0; i < form.elements.length; i++)
+          // This is done to exclude the submit button and empty form fields
+          if (form.elements[i].type !== "submit" && form.elements[i].value.trim() !== "")
+            json[form.elements[i].id] = form.elements[i].value.trim();
+
+        return json;
+      }
+
+      function formatTagsAsArray(json) {
+        if (!json["tags"]) return;
+
+        json.tags = json.tags.split(",");
+        json.tags = json.tags.map(tag => tag.trim());
+      }
+
+      function generateFragmentFromForm(formId) {
+        let form = document.getElementById(formId);
+        let json = getFormDataAsJSON(form);
+        formatTagsAsArray(json);
+        return json;
+      }
+
+      let form = document.getElementById("new-fragment-form");
+
+      form.onsubmit = function(e) {
+        e.preventDefault();
+        let fragment = generateFragmentFromForm(e.target.id);
+        console.log(fragment);
+
+        let headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        let settings = {
+          method: "POST",
+          headers,
+          body: JSON.stringify(fragments)
+        };
+
+        // TODO - FIGURE OUT WHY FETCH WONT WORK WITH LOCALHOST
+        fetch();
+      }
+    })();
+  </script>
+  
+</body>
+</html>
