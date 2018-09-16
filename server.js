@@ -44,6 +44,23 @@ function RegisterRoutes(app) {
   app.get("/fragments", (req, res) => {
     res.sendFile("home/index.html", { root: public });
   });
+
+  /**
+   * @method GET
+   * @name /api/fragments/health
+   * @description
+   * Fragments API health check route.
+   */
+  app.get("/api/fragments/health", (req, res) => {
+    res.status(200).send(true);
+  });
+
+  app.post("/api/fragments/test", (req, res) => {
+    let body = req.body;
+    console.log("Got this from the client");
+    console.log(body);
+    res.json(body);
+  })
   
   /**
    * @method GET
@@ -337,7 +354,6 @@ function RegisterRoutes(app) {
     }
 
   });
-  
   
   app.get("*", (req, res) => {
     let message = "That page doesn't exist. Try going to <a href='/fragments'>/fragments</a>"
