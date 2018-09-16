@@ -59,10 +59,13 @@
       // Variable and function declarations inside IIFE
       // do not pollute or leak into global scope (window).
 
-      // All input fields must have a unique id.
-      function getFormDataAsJSON(form) {
+      function getFormDataAsJSON(formId) {
+        if (!formId) return;
+
+        let form = document.getElementById(formId);
         let json = {};
 
+        // All input fields must have a unique id.
         for (let i = 0; i < form.elements.length; i++) {
           // This is done to exclude input fields of type
           // submit OR button AND empty form fields.
@@ -84,10 +87,22 @@
       }
 
       function generateFragmentFromForm(formId) {
-        let form = document.getElementById(formId);
-        let json = getFormDataAsJSON(form);
+        let json = getFormDataAsJSON(formId);
         formatTagsAsArray(json);
         return json;
+      }
+
+      function clearForm(formId) {
+        if (!formId) return;
+
+        let form = document.getElementById(formId);
+        for (let j = 0; j < form.elements.length; j++) {
+          if (
+            !(form.elements[j].type == "submit" || form.elements[j].type == "button") 
+            && form.elements[j].value.trim() !== ""
+          ) 
+            form.elements[j].value = "";
+        }
       }
       
       // References to DOM elements to be manipulated.
@@ -110,6 +125,10 @@
           headers,
           body: JSON.stringify(fragment)
         };
+
+        // TODO - Determine whether clearForm should be called
+        // before or after AJAX request.
+        clearForm(e.target.id);
 
         // TODO - FIGURE OUT WHY FETCH WONT WORK WITH LOCALHOST
         // fetch();
@@ -135,13 +154,7 @@
           // Verify user wants to clear form.
           if ( confirm(message) ) {
             // Clear the thing!
-            for (let j = 0; j < form.elements.length; j++) {
-              if (
-                !(form.elements[j].type == "submit" || form.elements[j].type == "button") 
-                && form.elements[j].value.trim() !== ""
-              ) 
-                form.elements[j].value = "";
-            }
+            clearForm(form.id);
           }
         }
 
