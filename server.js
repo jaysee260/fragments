@@ -340,8 +340,8 @@ function RegisterRoutes(app) {
   
   
   app.get("*", (req, res) => {
-    let message = "That page doesn't exist. Try going to /fragments"
-    res.status(400).send(message);
+    let message = "That page doesn't exist. Try going to <a href='/fragments'>/fragments</a>"
+    res.status(404).send(message);
   });
 
 }
