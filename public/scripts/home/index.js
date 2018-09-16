@@ -53,28 +53,50 @@
   const discardBtn = document.getElementById("discard-btn");
 
   // Attachment of event handler functions.
-  form.onsubmit = function(e) {
+  form.onsubmit = async function(e) {
     // Prevent the form from submitting (just yet).
     e.preventDefault();
     // Generate fragment using data from form data fields.
     let fragment = getFragmentFromForm(e.target.id);
-    console.log(fragment);
+    // console.log(fragment);
 
     // Configure settings and set request headers for POST request.
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
+    // let headers = new Headers();
+    // headers.append("Accept", "application/json");
+    // headers.append("Content-Type", "application/json");
     let settings = {
       method: "POST",
-      headers,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(fragment)
     };
 
-    // TODO - Determine whether clearForm should be called
-    // before or after AJAX request.
-    clearForm(e.target.id);
+    // TODO - import request endpoint from a config file or something.
+    // TODO - Try using async/await.
 
-    // TODO - FIGURE OUT WHY FETCH WONT WORK WITH LOCALHOST
-    // fetch();
+    // fetch("http://localhost:8000/api/fragments/test", settings)
+    //   .then(res => res.json())
+    //   .then(json => {
+    //     clearForm(e.target.id);
+    //     console.log("Got this from the API");
+    //     console.log(json);
+    //   })
+    //   .catch(error => console.log(error));
+
+      try {
+        let res = await fetch("http://localhost:8000/api/fragments/test", settings);
+
+        if (!res.ok) throw new Error("Response not ok.");
+        // if (res.ok) clearForm(e.target.id);
+
+        clearForm(e.target.id);
+        let json = await res.json();
+        console.log(json);
+      } catch (error) {
+        console.log("request failed");
+      }
   }
 
   discardBtn.onclick = function(e) {
