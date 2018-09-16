@@ -5,18 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Fragments</title>
+
+  <style>
+    #body {
+      resize: none;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
 </head>
 <body>
 
-  <main>
+  <main class="container">
 
     <form action="POST" id="new-fragment-form">
-      <header>
+
+      <div class="field">
+        <label class="label">Title</label>
+        <div class="control">
+          <input type="text" class="input" id="title" placeholder="(optional)">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Body</label>
+        <div class="control">
+          <textarea type="text" class="textarea" id="body" required></textarea>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Tags</label>
+        <div class="control">
+          <input type="text" class="input" id="tags" placeholder="separate tags with a comma">
+        </div>
+      </div>
+
+
+      <div class="field is-grouped">
+        <div class="control">
+          <input type="submit" class="button is-link" value="Save">
+        </div>
+        <div class="control">
+          <input type="button" class="button is-white" id="discard-btn" value="Discard">
+        </div>
+      </div>
+
+      <!-- <header>
         <h3>Create a new Fragment</h3>
       </header>
 
       <div>
-        <p>
+        <p id="titleLabel">
           <label for="title">Title</label>
         </p>
         <p>
@@ -25,7 +65,7 @@
       </div>
 
       <div>
-        <p>
+        <p id="bodyLabel">
           <label for="body">Body</label>
         </p>
         <p>
@@ -34,15 +74,17 @@
       </div>
 
       <div>
-        <p>
+        <p id="tagsLabel">
           <label for="tags">Tags</label>
         </p>
         <p>
-          <input type="text" name="tags" id="tags" placeholder="to categorize fragments" />
+          <input type="text" name="tags" id="tags" placeholder="separate tags with commas" />
         </p>
       </div>
 
-      <input type="submit" value="Save">
+      <p id="submitBtn">
+        <input type="submit" value="Save">
+      </p> -->
 
     </form>
 
@@ -50,14 +92,22 @@
 
   <script>
     (function() {
-      // All input fields must have an id.
+      // Variable and function declarations inside IIFE
+      // do not pollute or leak into global scope (window).
+
+      // All input fields must have a unique id.
       function getFormDataAsJSON(form) {
         let json = {};
 
-        for (let i = 0; i < form.elements.length; i++)
-          // This is done to exclude the submit button and empty form fields
-          if (form.elements[i].type !== "submit" && form.elements[i].value.trim() !== "")
+        for (let i = 0; i < form.elements.length; i++) {
+          // This is done to exclude input fields of type
+          // submit OR button AND empty form fields.
+          if (
+            !(form.elements[i].type == "submit" || form.elements[i].type == "button") 
+            && form.elements[i].value.trim() !== ""
+          )
             json[form.elements[i].id] = form.elements[i].value.trim();
+        }
 
         return json;
       }
@@ -75,27 +125,65 @@
         formatTagsAsArray(json);
         return json;
       }
+      
+      // References to DOM elements to be manipulated.
+      const form = document.getElementById("new-fragment-form");
+      const discardBtn = document.getElementById("discard-btn");
 
-      let form = document.getElementById("new-fragment-form");
-
+      // Attachment of event handler functions.
       form.onsubmit = function(e) {
+        // Prevent the form from submitting (just yet).
         e.preventDefault();
+        // Generate fragment using data from form data fields.
         let fragment = generateFragmentFromForm(e.target.id);
         console.log(fragment);
 
+        // Configure settings and set request headers for POST request.
         let headers = new Headers();
         headers.append("Content-Type", "application/json");
         let settings = {
           method: "POST",
           headers,
-          body: JSON.stringify(fragments)
+          body: JSON.stringify(fragment)
         };
 
         // TODO - FIGURE OUT WHY FETCH WONT WORK WITH LOCALHOST
-        fetch();
+        // fetch();
       }
+
+      discardBtn.onclick = function(e) {
+        let populatedFieldsCount = 0;
+
+        // Check if there's AT LEAST one populated form field.
+        for (let i = 0; i < form.elements.length; i++) {
+          if (form.elements[i].type == "submit" || form.elements[i].type == "button")
+            continue;
+          
+          if (form.elements[i].value !== "")
+            populatedFieldsCount++;
+        }
+
+        // If all fields are empty just return. Otherwise clear form.
+        if (populatedFieldsCount == 0) {
+          return;
+        } else {
+          let message = "Are you sure you wan't to clear everything?";
+          // Verify user wants to clear form.
+          if ( confirm(message) ) {
+            // Clear the thing!
+            for (let j = 0; j < form.elements.length; j++) {
+              if (
+                !(form.elements[j].type == "submit" || form.elements[j].type == "button") 
+                && form.elements[j].value.trim() !== ""
+              ) 
+                form.elements[j].value = "";
+            }
+          }
+        }
+
+      }
+
     })();
   </script>
-  
 </body>
 </html>
