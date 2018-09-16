@@ -42,7 +42,7 @@ function RegisterRoutes(app) {
    * Home Route.
    */
   app.get("/fragments", (req, res) => {
-    res.sendFile("home.html", { root: public });
+    res.sendFile("home/index.html", { root: public });
   });
   
   /**
