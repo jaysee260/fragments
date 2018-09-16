@@ -86,7 +86,7 @@
         json.tags = json.tags.map(tag => tag.trim());
       }
 
-      function generateFragmentFromForm(formId) {
+      function getFragmentFromForm(formId) {
         let json = getFormDataAsJSON(formId);
         formatTagsAsArray(json);
         return json;
@@ -114,7 +114,7 @@
         // Prevent the form from submitting (just yet).
         e.preventDefault();
         // Generate fragment using data from form data fields.
-        let fragment = generateFragmentFromForm(e.target.id);
+        let fragment = getFragmentFromForm(e.target.id);
         console.log(fragment);
 
         // Configure settings and set request headers for POST request.
@@ -139,6 +139,7 @@
 
         // Check if there's AT LEAST one populated form field.
         for (let i = 0; i < form.elements.length; i++) {
+          // Excluse input fields of type submit OR button.
           if (form.elements[i].type == "submit" || form.elements[i].type == "button")
             continue;
           
