@@ -35,6 +35,23 @@
     return json;
   }
 
+  function postFragment(fragment) {
+    // Configure settings and set headers for POST request.
+    let settings = {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(fragment)
+    };
+
+    // returns an unresolved Promise.
+    return fetch("/api/fragments", settings);
+  }
+
+  /////////////////////////////////////
+
   function clearForm(formId) {
     if (!formId) return;
 
@@ -46,6 +63,14 @@
       ) 
         form.elements[j].value = "";
     }
+  }
+
+  function displayNotification(selector, ms) {
+    const notification = document.querySelector(selector);
+    notification.classList.toggle("active");
+    setTimeout(function() {
+      notification.classList.toggle("active");
+    }, ms);
   }
   
   // References to DOM elements to be manipulated.
@@ -59,30 +84,27 @@
     // Generate fragment using data from form data fields.
     let fragment = getFragmentFromForm(e.target.id);
 
-    // Configure settings and set headers for POST request.
-    let settings = {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(fragment)
-    };
-
-    // TODO - import request endpoint from a config file or something.
     try {
       // Send fragment to server and parse json from response. Then clear the form.
-      let res = await fetch("http://localhost:8000/api/fragments/test", settings);
-      let json = await res.json();
-      clearForm(e.target.id);
-      console.log(json);
+      let res = await postFragment(fragment);
+      // let json = await res.json();
+      if (res.ok) {
+        displayNotification(".is-success", 3000);
+        clearForm(e.target.id);
+        // console.log(json);
+      } else {
+        throw new Error(res);
+      }
     } catch (error) {
-      console.log("request failed");
+      // console.log(error);
+      displayNotification(".is-danger", 3000);
     }
   }
 
   discardBtn.onclick = function(e) {
-    let form = document.getElementById(e.target.parentElement.id);
+    if (!e.target.form.id) return;
+
+    let form = document.getElementById(e.target.form.id);
     let populatedFieldsCount = 0;
 
     // Check if there's AT LEAST one populated form field.

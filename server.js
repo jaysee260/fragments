@@ -369,7 +369,7 @@ function RegisterRoutes(app) {
 
   ConfigureAppMiddleware(app, env);
   RegisterRoutes(app);
-  Database.Initialize();
+  Database.Initialize(env);
 
   // Start server on specified port.
   app.listen(port, () => {

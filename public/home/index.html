@@ -29,7 +29,7 @@
 
     <section id="main-body" class="section">
 
-      <div class="columns is-centered reverse-row-order">
+      <div class="columns is-multiline is-centered">
         <div class="column box is-half">
           <form action="POST" id="new-fragment-form">
             <div class="field">
@@ -64,13 +64,19 @@
             </div>
           </form>
         </div>
+      </div>
 
-        <!-- <div class="column box is-half">
-          <div class="notification is-warning">
-            <button class="delete"></button>
-            Lorem ipsum dolor sit amet.
+      <div class="columns is-centered">
+        <div class="column is-half">
+          <div class="notification is-success has-text-centered is-size-5">
+            <p>Fragment saved</p>
           </div>
-        </div> -->
+
+          <div class="notification is-danger has-text-centered is-size-5">
+            <p>Something went wrong.</p>
+            <p>Fragment was not saved.</p>
+          </div>
+        </div>
       </div>
 
     </section>
