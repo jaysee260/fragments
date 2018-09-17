@@ -8,6 +8,7 @@
 
   <link rel="stylesheet" href="../styles/home/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+  <link href='http://fonts.googleapis.com/css?family=Sriracha' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
@@ -16,7 +17,7 @@
     <section class="hero is-small has-text-centered">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">
+          <h1 id="hero-title" class="title">
             Fragments
           </h1>
           <h2 class="subtitle">
@@ -26,10 +27,10 @@
       </div>
     </section>
 
-    <section class="section">
+    <section id="main-body" class="section">
 
-      <div class="columns is-centered">
-        <div class="column is-half">
+      <div class="columns is-centered reverse-row-order">
+        <div class="column box is-half">
           <form action="POST" id="new-fragment-form">
             <div class="field">
               <label class="label">Title</label>
@@ -63,6 +64,13 @@
             </div>
           </form>
         </div>
+
+        <!-- <div class="column box is-half">
+          <div class="notification is-warning">
+            <button class="delete"></button>
+            Lorem ipsum dolor sit amet.
+          </div>
+        </div> -->
       </div>
 
     </section>

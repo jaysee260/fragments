@@ -58,12 +58,8 @@
     e.preventDefault();
     // Generate fragment using data from form data fields.
     let fragment = getFragmentFromForm(e.target.id);
-    // console.log(fragment);
 
-    // Configure settings and set request headers for POST request.
-    // let headers = new Headers();
-    // headers.append("Accept", "application/json");
-    // headers.append("Content-Type", "application/json");
+    // Configure settings and set headers for POST request.
     let settings = {
       method: "POST",
       headers: {
@@ -74,32 +70,19 @@
     };
 
     // TODO - import request endpoint from a config file or something.
-    // TODO - Try using async/await.
-
-    // fetch("http://localhost:8000/api/fragments/test", settings)
-    //   .then(res => res.json())
-    //   .then(json => {
-    //     clearForm(e.target.id);
-    //     console.log("Got this from the API");
-    //     console.log(json);
-    //   })
-    //   .catch(error => console.log(error));
-
-      try {
-        let res = await fetch("http://localhost:8000/api/fragments/test", settings);
-
-        if (!res.ok) throw new Error("Response not ok.");
-        // if (res.ok) clearForm(e.target.id);
-
-        clearForm(e.target.id);
-        let json = await res.json();
-        console.log(json);
-      } catch (error) {
-        console.log("request failed");
-      }
+    try {
+      // Send fragment to server and parse json from response. Then clear the form.
+      let res = await fetch("http://localhost:8000/api/fragments/test", settings);
+      let json = await res.json();
+      clearForm(e.target.id);
+      console.log(json);
+    } catch (error) {
+      console.log("request failed");
+    }
   }
 
   discardBtn.onclick = function(e) {
+    let form = document.getElementById(e.target.parentElement.id);
     let populatedFieldsCount = 0;
 
     // Check if there's AT LEAST one populated form field.
