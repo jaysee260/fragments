@@ -32,17 +32,19 @@ const { Database } = require("./db");
 
 // Declare Routes to be registered upon Application start.
 function RegisterRoutes(app) {
-  const public = path.join(__dirname, "public");
+  const publicViews = path.join(__dirname, "public", "views");
   const Fragment = require("./db/Fragments");
 
   /**
    * @method GET
-   * @name /fragments
+   * @name /
    * @description
    * Home Route.
    */
-  app.get("/fragments", (req, res) => {
-    res.sendFile("home/index.html", { root: public });
+  app.get("/", (req, res) => {
+    console.log(publicViews);
+    
+    res.sendFile("home/index.html", { root: publicViews });
   });
 
   /**
@@ -81,9 +83,6 @@ function RegisterRoutes(app) {
         // notify client and show how a fragment
         // should be structured.
         let model = require("mongoose").model("Fragment").schema.obj;
-        // Client doesn't need to know of default values
-        // for createdOn.time and createdOn.date, so just remove it.
-        delete model.createdOn;
   
         res.status(404).json({
           message: "No fragments have been created yet.",
@@ -158,24 +157,6 @@ function RegisterRoutes(app) {
           // Otherwise attempt to store fragment in DB.
           let fragment;
           try {
-  
-            /** @todo
-             * decide whether you want to keep or discard this
-             */
-            // if (env === "dev") {
-  
-            //   // If we're in development mode,
-            //   // create fragment but DON'T save
-            //   // it into DB
-            //   fragment = new Fragment(data);
-  
-            // } else { // env === "prod"
-  
-            //   // If we're in production mode,
-            //   // create fragment AND save it into DB
-            //   fragment = await Fragment.create(data);
-  
-            // }
 
             fragment = await Fragment.create(data);
             
@@ -356,7 +337,7 @@ function RegisterRoutes(app) {
   });
   
   app.get("*", (req, res) => {
-    let message = "That page doesn't exist. Try going to <a href='/fragments'>/fragments</a>"
+    let message = "That page doesn't exist. Try going <a href='/'>here</a>"
     res.status(404).send(message);
   });
 

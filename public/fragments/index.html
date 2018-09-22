@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Fragments</title>
+</head>
+<body>
+
+  <ol id="flist"></ol>
+
+  <script>
+    (async function() {
+
+      function getAllFragments() {
+        let settings = {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        };
+
+        return fetch("/api/fragments", settings);
+      }
+      
+      var fragments;
+      try {
+        let response = await getAllFragments();
+        let data = await response.json();
+        fragments = data.fragments;
+      } catch (error) {
+        console.log(error);
+      }
+
+      // console.log(fragments);
+      
+      // Fragments List
+      const flist = document.getElementById("flist");
+      for (let i = 0; i < fragments.length; i++) {
+        let li = document.createElement("LI");
+        li.setAttribute("class", "fragment");
+        li.setAttribute("id", i+1);
+        li.innerHTML = fragments[i].body;
+        flist.appendChild(li);
+      }
+
+    })();
+  </script>
+  
+</body>
+</html>
