@@ -7,7 +7,7 @@ const path = require("path");
 const app = express();
 
 // Import Environment related variables
-const { PORT:port = 3000 } = process.env;
+const { PORT:port = 8000 } = process.env;
 const { NODE_ENV:env = "dev" } = process.env;
 
 // Declare middleware to be configured upon Application start.
