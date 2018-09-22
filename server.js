@@ -32,7 +32,7 @@ const { Database } = require("./db");
 
 // Declare Routes to be registered upon Application start.
 function RegisterRoutes(app) {
-  const publicViews = path.join(__dirname, "public", "views");
+  const public = path.join(__dirname, "public");
   const Fragment = require("./db/Fragments");
 
   /**
@@ -41,10 +41,8 @@ function RegisterRoutes(app) {
    * @description
    * Home Route.
    */
-  app.get("/", (req, res) => {
-    console.log(publicViews);
-    
-    res.sendFile("home/index.html", { root: publicViews });
+  app.get("/", (req, res) => {    
+    res.sendFile("home/index.html", { root: public });
   });
 
   /**
