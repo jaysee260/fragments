@@ -1,6 +1,5 @@
 // Import Application dependencies
 const express = require("express");
-const bodyParser = require("body-parser");
 const path = require("path");
 
 // Initialize Application instance
@@ -12,12 +11,15 @@ const { NODE_ENV:env = "dev" } = process.env;
 
 // Declare middleware to be configured upon Application start.
 function ConfigureAppMiddleware(app, env) {
+  const bodyParser = require("body-parser");
+  const favicon = require("serve-favicon");
 
   if (env === "dev") {
     const logger = require("morgan");
     app.use(logger("dev"));
   }
 
+  app.use(favicon( path.join(__dirname, "public", "favicon.ico") ));
   app.use(express.static( path.join(__dirname, "public") ));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
