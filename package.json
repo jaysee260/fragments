@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "cross-env NODE_ENV=prod node server.js",
-    "dev": "cross-env NODE_ENV=dev nodemon server.js"
+    "dev": "cross-env NODE_ENV=dev nodemon server.js",
+    "add:heroku:remote": "git remote add heroku https://git.heroku.com/desolate-mountain-93698.git"
   },
   "keywords": [],
   "author": "",
