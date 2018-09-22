@@ -1,0 +1,10 @@
+{
+  "db": {
+    "local": {
+      "connectionString": "mongodb://localhost:27017/fragments"
+    },
+    "remote": {
+      "connectionString": "mongodb://dbroot:fragmentspwd18@ds125041.mlab.com:25041/fragments"
+    }
+  }
+}
