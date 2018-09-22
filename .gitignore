@@ -2,5 +2,5 @@
 node_modules
 #package-lock.json
 throaway.md
-#app.config.json
+app.config.json
 bash.exe.stackdump
