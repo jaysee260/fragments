@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { db:dbKeys } = require("../app.config.json");
+const { db:dbKeys } = require("../../app.config.json");
 
 const Database = {};
 
