@@ -13,6 +13,7 @@ const { NODE_ENV:env = "dev" } = process.env;
 function ConfigureAppMiddleware(app, env) {
   const bodyParser = require("body-parser");
   const favicon = require("serve-favicon");
+  const hbs = require("express-handlebars");
 
   if (env === "dev") {
     const logger = require("morgan");
@@ -27,6 +28,14 @@ function ConfigureAppMiddleware(app, env) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
+  let engineSettings = {};
+  engineSettings.extname = "hbs";
+  engineSettings.defaultLayout = "layout";
+  engineSettings. layoutsDir = path.join(__dirname, "views", "shared");
+  app.engine("hbs", hbs(engineSettings));
+  app.set("views", path.join( __dirname, "views" ));
+  app.set("view engine", "hbs");
+
 }
 
 // Import reference to Database.
@@ -39,6 +48,10 @@ const { Database } = require("./db");
 function RegisterRoutes(app) {
   const home = path.join(__dirname, "views", "home");
   const Fragment = require("./models/Fragments");
+
+  app.get("/webtest", (req, res) => {
+    res.render("webtest");
+  });
 
   /**
    * @method GET
