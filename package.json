@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "NODE_ENV=prod node server.js",
+    "dev": "NODE_ENV=dev nodemon server.js",
     "local": "heroku local",
-    "live": "heroku open",
-    "heroku:deploy": "git push heroku heroku/production:master"
+    "live": "heroku open"
   },
   "keywords": [],
   "author": "",
