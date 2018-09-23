@@ -69,8 +69,15 @@
 
   </main>
 
+  <!-- TODO - Move script into another file -->
   <script>
     (async function() {
+
+      // TODO
+      // Use localstorage to cache fragments returned
+      // from server in order to speed up table re-rendering
+      // time once a fragment is deleted. Set up cache to for
+      // 10 or so minutes
 
       function getAllFragments() {
         let settings = {
@@ -155,7 +162,6 @@
 
         populateTable(table_id, fragments);
       }
-
 
 
       const table = document.getElementById("fragments-table");
