@@ -1,5 +1,6 @@
 .vscode
 node_modules
 #package-lock.json
+app.config.json
 throaway.md
 bash.exe.stackdump
