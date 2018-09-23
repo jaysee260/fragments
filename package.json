@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "local": "heroku local",
     "heroku:deploy": "git push heroku heroku/production:master"
   },
   "keywords": [],
@@ -14,7 +15,8 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "moment": "^2.22.2",
-    "mongoose": "^5.2.14"
+    "mongoose": "^5.2.14",
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",

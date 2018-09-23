@@ -1,6 +1,5 @@
 // Import Application dependencies
 const express = require("express");
-const bodyParser = require("body-parser");
 const path = require("path");
 
 // Initialize Application instance
@@ -12,12 +11,15 @@ const { NODE_ENV:env = "dev" } = process.env;
 
 // Declare middleware to be configured upon Application start.
 function ConfigureAppMiddleware(app, env) {
+  const bodyParser = require("body-parser");
+  const favicon = require("serve-favicon");
 
   if (env === "dev") {
     const logger = require("morgan");
     app.use(logger("dev"));
   }
 
+  app.use(favicon( path.join(__dirname, "public", "favicon.ico") ));
   app.use(express.static( path.join(__dirname, "public") ));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -37,11 +39,11 @@ function RegisterRoutes(app) {
 
   /**
    * @method GET
-   * @name /fragments
+   * @name /
    * @description
    * Home Route.
    */
-  app.get("/fragments", (req, res) => {
+  app.get("/", (req, res) => {    
     res.sendFile("home/index.html", { root: public });
   });
 
@@ -81,9 +83,6 @@ function RegisterRoutes(app) {
         // notify client and show how a fragment
         // should be structured.
         let model = require("mongoose").model("Fragment").schema.obj;
-        // Client doesn't need to know of default values
-        // for createdOn.time and createdOn.date, so just remove it.
-        delete model.createdOn;
   
         res.status(404).json({
           message: "No fragments have been created yet.",
@@ -158,24 +157,6 @@ function RegisterRoutes(app) {
           // Otherwise attempt to store fragment in DB.
           let fragment;
           try {
-  
-            /** @todo
-             * decide whether you want to keep or discard this
-             */
-            // if (env === "dev") {
-  
-            //   // If we're in development mode,
-            //   // create fragment but DON'T save
-            //   // it into DB
-            //   fragment = new Fragment(data);
-  
-            // } else { // env === "prod"
-  
-            //   // If we're in production mode,
-            //   // create fragment AND save it into DB
-            //   fragment = await Fragment.create(data);
-  
-            // }
 
             fragment = await Fragment.create(data);
             
@@ -356,7 +337,7 @@ function RegisterRoutes(app) {
   });
   
   app.get("*", (req, res) => {
-    let message = "That page doesn't exist. Try going to <a href='/fragments'>/fragments</a>"
+    let message = "That page doesn't exist. Try going <a href='/'>here</a>"
     res.status(404).send(message);
   });
 

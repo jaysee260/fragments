@@ -1,0 +1,7 @@
+#fragments-table {
+  width: 100%;
+}
+
+.fragment:hover {
+  background: lightblue;
+}

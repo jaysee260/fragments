@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Fragments - All</title>
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../styles/common/index.css">
+  <link rel="stylesheet" href="../styles/fragments/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Sriracha' rel='stylesheet' type='text/css'>
+  <script src="../scripts/common/navbar/index.js"></script>
+</head>
+<body>
+
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" id="brand" href="/">
+          Fragments
+        </a>
+  
+        <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+  
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="/" >
+            Home
+          </a>
+          
+          <a class="navbar-item" href="/fragments">
+            View All
+          </a>
+        </div>  
+      </div>
+    </nav>
+
+  <main class="container is-fluid">
+    
+    <section class="section">
+      <table class="table" id="fragments-table">
+
+        <thead>
+          <tr id="header-row" data-headers="title,body,tags,createdOn">
+            <th>Title</th>
+            <th>Body</th>
+            <th>Tags</th>
+            <th>Created On</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- <tr class="fragment">
+            <td class="ftitle">{title}</td>
+            <td class="fbody">{body}</td>
+            <td class="ftags">[tags]</td>
+            <td class="fcreatedO">{date:time}</td>
+          </tr> -->
+        </tbody>
+
+      </table>
+      <!-- <ol id="flist"></ol> -->
+    </section>
+
+  </main>
+
+  <script>
+    (async function() {
+
+      function getAllFragments() {
+        let settings = {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        };
+
+        return fetch("/api/fragments", settings);
+      }
+      
+      function populateTable(id, data, rowClass) {
+        let tableBody = document.getElementById(id).tBodies[0];
+        
+        // Create a row for each fragment.
+        // Then create a <td> for each field in the fragment.
+        data.forEach((item, i) => {
+          let tableRow = document.createElement("TR");
+          tableRow.setAttribute("class", "fragment");
+          tableRow.setAttribute("id", item._id)
+          tableRow.dataset.rowNumber = i+1;
+          delete item._id;
+          let count = 0;
+          let headers = document.getElementById("header-row").dataset.headers.split(",");
+          while (count < headers.length) {
+            
+            let tableDataCell = document.createElement("TD");
+            tableDataCell.setAttribute("id", count+1);
+            if (headers[count] == "createdOn") {
+              tableDataCell.innerText = item[headers[count]].date + " at " + item[headers[count]].time;
+            } else {
+              tableDataCell.innerText = item[headers[count]];
+            }
+            
+            tableRow.appendChild(tableDataCell);
+            count++;
+          }
+          
+          tableBody.appendChild(tableRow);
+        });
+        // console.log(tableBody);
+        
+      };
+
+      var fragments;
+      try {
+        let response = await getAllFragments();
+        let data = await response.json();
+        fragments = data.fragments;
+      } catch (error) {
+        console.log(error);
+      }
+
+      populateTable("fragments-table", fragments);
+
+      // console.log(fragments);
+      
+      // Fragments List
+      // const flist = document.getElementById("flist");
+      // for (let i = 0; i < fragments.length; i++) {
+      //   let li = document.createElement("LI");
+      //   li.setAttribute("class", "fragment");
+      //   li.setAttribute("id", i+1);
+      //   li.innerHTML = fragments[i].body;
+      //   flist.appendChild(li);
+      // }
+
+    })();
+  </script>
+  
+</body>
+</html>
