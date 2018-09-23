@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "local": "heroku local",
+    "live": "heroku open",
     "heroku:deploy": "git push heroku heroku/production:master"
   },
   "keywords": [],
