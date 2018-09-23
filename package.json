@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "cross-env NODE_ENV=dev nodemon index.js",
-    "local": "heroku local",
-    "live": "heroku open",
-    "add:heroku:remote": "git remote add heroku https://git.heroku.com/desolate-mountain-93698.git && git remote -v"
+    "local": "heroku local"
   },
   "keywords": [],
   "author": "",
