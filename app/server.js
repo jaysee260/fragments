@@ -21,7 +21,9 @@ function ConfigureAppMiddleware(app, env) {
 
   app.use(favicon( path.join(__dirname, "public", "favicon.ico") ));
   app.use(express.static( path.join(__dirname, "public") ));
-  app.use( express.static( path.join(__dirname, "public", "views") ) );
+  app.use( express.static( path.join(__dirname, "views") ) );
+  app.use("/", express.static( path.join(__dirname, "views", "home") ));
+  
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -35,7 +37,7 @@ const { Database } = require("./db");
 
 // Declare Routes to be registered upon Application start.
 function RegisterRoutes(app) {
-  const public = path.join(__dirname, "views");
+  const home = path.join(__dirname, "views", "home");
   const Fragment = require("./models/Fragments");
 
   /**
@@ -44,9 +46,9 @@ function RegisterRoutes(app) {
    * @description
    * Home Route.
    */
-  app.get("/", (req, res) => {    
-    res.sendFile("home/index.html", { root: public });
-  });
+  // app.get("/", (req, res) => {    
+  //   res.sendFile("index.html", { root: home });
+  // });
 
   /**
    * @method GET
