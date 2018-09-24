@@ -23,7 +23,7 @@ function ConfigureAppMiddleware(app, env) {
   app.use(favicon( path.join(__dirname, "public", "favicon.ico") ));
   app.use(express.static( path.join(__dirname, "public") ));
   app.use( express.static( path.join(__dirname, "views") ) );
-  app.use("/", express.static( path.join(__dirname, "views", "home") ));
+  // app.use("/", express.static( path.join(__dirname, "views", "home") ));
   
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -59,9 +59,10 @@ function RegisterRoutes(app) {
    * @description
    * Home Route.
    */
-  // app.get("/", (req, res) => {    
-  //   res.sendFile("index.html", { root: home });
-  // });
+  app.get("/", (req, res) => {    
+    // res.sendFile("index.html", { root: home });
+    res.render("home");
+  });
 
   /**
    * @method GET

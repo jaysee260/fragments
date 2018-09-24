@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="./css/index.css">
+
+<main class="container is-fluid">
+
+    <section class="hero is-small has-text-centered">
+      <div class="hero-body">
+        <div class="container">
+          <h1 id="hero-title" class="title">
+            Fragments
+          </h1>
+          <h2 class="subtitle">
+            Write and save <span class="is-italic">fragments</span> of thought on the fly.
+          </h2>
+        </div>
+      </div>
+    </section>
+
+    <section id="main-body" class="section">
+
+      <div class="columns is-multiline is-centered">
+        <div class="column box is-half">
+          <form action="POST" id="new-fragment-form">
+            <div class="field">
+              <label class="label">Title</label>
+              <div class="control">
+                <input type="text" class="input" id="title" placeholder="(optional)">
+              </div>
+            </div>
+    
+            <div class="field">
+              <label class="label">Body</label>
+              <div class="control">
+                <textarea type="text" class="textarea" id="body" required></textarea>
+              </div>
+            </div>
+    
+            <div class="field">
+              <label class="label">Tags</label>
+              <div class="control">
+                <input type="text" class="input" id="tags" placeholder="separate tags with commas">
+              </div>
+            </div>
+    
+    
+            <div class="field is-grouped">
+              <div class="control">
+                <input type="submit" class="button is-link" value="Save">
+              </div>
+              <div class="control">
+                <input type="button" class="button is-white" id="discard-btn" value="Discard">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column is-half">
+          <div class="notification is-success has-text-centered is-size-5">
+            <p>Fragment saved</p>
+          </div>
+
+          <div class="notification is-danger has-text-centered is-size-5">
+            <p>Something went wrong.</p>
+            <p>Fragment was not saved.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script type="text/x-handlebars" src="./js/index.js"></script>
