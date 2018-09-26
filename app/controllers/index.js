@@ -1,8 +1,10 @@
-const fragments = require();
+const fragments = require("express").Router();
+
+require("./fragments")(fragments);
 
 function ApplicationControllers(router) {
   
-  // router.use("/api/fragments", <Controller>);
+  router.use("/api/fragments", fragments);
 
 }
 

@@ -50,15 +50,15 @@ function RegisterRoutes(app) {
   //   res.sendFile("index.html", { root: home });
   // });
 
-  /**
-   * @method GET
-   * @name /api/fragments/health
-   * @description
-   * Fragments API health check route.
-   */
-  app.get("/api/fragments/health", (req, res) => {
-    res.status(200).send(true);
-  });
+  // /**
+  //  * @method GET
+  //  * @name /api/fragments/health
+  //  * @description
+  //  * Fragments API health check route.
+  //  */
+  // app.get("/api/fragments/health", (req, res) => {
+  //   res.status(200).send(true);
+  // });
 
   app.post("/api/fragments/test", (req, res) => {
     let body = req.body;
@@ -352,7 +352,8 @@ function RegisterRoutes(app) {
 (function Start(env, app, port){
 
   ConfigureAppMiddleware(app, env);
-  RegisterRoutes(app);
+  // RegisterRoutes(app);
+  require("./controllers").ApplicationControllers();
   Database.Initialize(env);
 
   // Start server on specified port.
