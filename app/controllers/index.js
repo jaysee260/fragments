@@ -1,10 +1,11 @@
-const fragments = require("express").Router();
+const fragmentsRouter = require("express").Router();
 
-require("./fragments")(fragments);
+require("./fragments")(fragmentsRouter);
+
 
 function ApplicationControllers(router) {
-  
-  router.use("/api/fragments", fragments);
+
+  router.use("/api/fragments", fragmentsRouter);
 
 }
 
