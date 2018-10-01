@@ -2,3 +2,7 @@
   font: 20px 'Sriracha', Helvetica, sans-serif;
   text-shadow: 4px 4px 0px rgba(0,0,0,0.1);
 }
+
+.navbar-brand a {
+  color: #fff !important;
+}

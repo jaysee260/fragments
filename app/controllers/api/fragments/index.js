@@ -2,9 +2,19 @@
   * /api/fragments routes go here
 */
 
-const Fragment = require("../../../db/Fragments");
+const Fragment = require("../../../models/Fragments");
 
 function FragmentsController(router) {
+
+  /**
+   * @method GET
+   * @name /api/fragments/health
+   * @description
+   * Fragments API health check route.
+   */
+  router.get("/health", (req, res) => {
+    res.status(200).send(true);
+  });
 
   /**
    * @method GET
@@ -12,7 +22,7 @@ function FragmentsController(router) {
    * @description
    * Returns all available fragments
    */
-  router.get("/api/fragments", async (req, res) => {
+  router.get("/", async (req, res) => {
   
     try {
   
@@ -73,7 +83,7 @@ function FragmentsController(router) {
    * @description
    * Finds and returns a single fragment by _id.
    */
-  router.get("/api/:fragment_id", async (req, res) => {
+  router.get("/:fragment_id", async (req, res) => {
     // check for _id
     // do stuff
   });
@@ -85,7 +95,7 @@ function FragmentsController(router) {
    * Creates a new Fragment object
    * and saves it into the database.
    */
-  router.post("/api/fragments", async (req, res) => {
+  router.post("/", async (req, res) => {
       // Grab payload from request's body
       let data = req.body;
   
@@ -154,7 +164,7 @@ function FragmentsController(router) {
    * @description
    * Updates fragment of given _id
    */
-  router.put("/api/:fragment_id", async (req, res) => {
+  router.put("/:fragment_id", async (req, res) => {
     // check for _id
     // do stuff
     const { fragment_id } = req.params;
@@ -213,7 +223,7 @@ function FragmentsController(router) {
    * @description
    * Deletes fragment of given _id
    */
-  router.delete("/api/fragments/:fragment_id", async (req, res) => {
+  router.delete("/:fragment_id", async (req, res) => {
     
     
     const { fragment_id } = req.params;
