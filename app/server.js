@@ -35,14 +35,16 @@ const { Database } = require("./db");
 ///////////////// <Routes> //////////////////////
 
 function RegisterRoutes(app) {
+  // Declare static routes
+  app.use("/", express.static( path.join(__dirname, "views", "home") ));
+  
+  // Register routes
   const MasterRouter = require("express").Router();
-
+  
   require("./controllers")
     .ApplicationControllers(MasterRouter);
-
+  
   app.use("/", MasterRouter);
-
-  app.use("/", express.static( path.join(__dirname, "views", "home") ));
 }
 
 ///////////////// </Routes> //////////////////////
