@@ -1,6 +1,17 @@
+// Instantiate path specific Routers
+const apiRouter = require("express").Router();
+const notFound = require("express").Router();
+
+// Attach business logic to Routers
+require("./api")(apiRouter);
+require("./notFound")(notFound);
+
+// Catalog of Application Routes
 function ApplicationControllers(router) {
-  
-  // router.use("/api/fragments", <Controller>);
+
+  router.use("/api", apiRouter);
+
+  router.use("*", notFound);
 
 }
 
