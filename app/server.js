@@ -21,9 +21,7 @@ function ConfigureAppMiddleware(app, env) {
 
   app.use(favicon( path.join(__dirname, "public", "favicon.ico") ));
   app.use(express.static( path.join(__dirname, "public") ));
-  app.use( express.static( path.join(__dirname, "views") ) );
-  
-  app.use("/", express.static( path.join(__dirname, "views", "home") ));
+  app.use( express.static( path.join(__dirname, "views") ));
   
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -43,6 +41,8 @@ function RegisterRoutes(app) {
     .ApplicationControllers(MasterRouter);
 
   app.use("/", MasterRouter);
+
+  app.use("/", express.static( path.join(__dirname, "views", "home") ));
 }
 
 ///////////////// </Routes> //////////////////////
