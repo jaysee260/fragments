@@ -1,10 +1,13 @@
-const fragmentsRouter = require("express").Router();
+// Instantiate path specific Routers
+const apiRouter = require("express").Router();
 
-require("./fragments")(fragmentsRouter);
+// Attach business logic to Routers
+require("./api")(apiRouter);
 
+// Catalog of Application Routes
 function ApplicationControllers(router) {
 
-  router.use("/api/fragments", fragmentsRouter);
+  router.use("/api", apiRouter);
 
 }
 

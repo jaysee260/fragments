@@ -2,7 +2,7 @@
   * /api/fragments routes go here
 */
 
-const Fragment = require("../../models/Fragments");
+const Fragment = require("../../../models/Fragments");
 
 function FragmentsController(router) {
 
