@@ -6,8 +6,10 @@ const path = require("path");
 const app = express();
 
 // Import Environment related variables
-const { PORT:port = 8000 } = process.env;
-const { NODE_ENV:env = "dev" } = process.env;
+const { PORT:port = 8000 } = process.env;       // if no value is specified, default to port 8000
+const { NODE_ENV:env = "dev" } = process.env;   // if no value is specified, default to "dev"
+
+///////////////// <Middleware> //////////////////////
 
 // Declare middleware to be configured upon Application start.
 function ConfigureAppMiddleware(app, env) {
@@ -25,12 +27,17 @@ function ConfigureAppMiddleware(app, env) {
   
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
-
 }
 
+///////////////// </Middleware> //////////////////////
+
+///////////////// <Database> //////////////////////
+
 // Import reference to Database.
-// Database will be initialized once Application starts
+// Database connection will be initialized once application starts
 const { Database } = require("./db");
+
+///////////////// </Database> //////////////////////
 
 ///////////////// <Routes> //////////////////////
 
@@ -38,12 +45,13 @@ function RegisterRoutes(app) {
   // Declare static routes
   app.use("/", express.static( path.join(__dirname, "views", "home") ));
   
-  // Register routes
   const MasterRouter = require("express").Router();
   
+  // Attach API business logic to MasterRouter (by reference)
   require("./controllers")
     .ApplicationControllers(MasterRouter);
   
+  // Use MasterRouter to route all requests coming through root endpoint
   app.use("/", MasterRouter);
 }
 
