@@ -1,8 +1,8 @@
 // Instantiate path specific Routers
-const apiRouter = require("express").Router();
-const notFound = require("express").Router();
+const apiRouter   = require("express").Router();
+const notFound    = require("express").Router();
 
-// Attach business logic to Routers
+// Attach business logic to Routers (by reference)
 require("./api")(apiRouter);
 require("./notFound")(notFound);
 
