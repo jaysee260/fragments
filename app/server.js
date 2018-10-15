@@ -6,8 +6,9 @@ const path = require("path");
 const app = express();
 
 // Import Environment related variables
-const { PORT:port = 8000 } = process.env;       // if no value is specified, default to port 8000
-const { NODE_ENV:env = "dev" } = process.env;   // if no value is specified, default to "dev"
+const { PORT:port = 8000 } = process.env;             // if no value is specified, default to port 8000
+const { NODE_ENV:env = "dev" } = process.env;         // if no value is specified, default to "dev"
+const { TARGET_DB:target_db = "dev" } = process.env;  // default connection to dev db if not explicitly specified
 
 ///////////////// <Middleware> //////////////////////
 
@@ -58,11 +59,11 @@ function RegisterRoutes(app) {
 ///////////////// </Routes> //////////////////////
 
 // Start the Application.
-(function Start(env, app, port){
+(function Start(env, app, port, target_db){
 
   ConfigureAppMiddleware(app, env);
   RegisterRoutes(app);
-  Database.Initialize(env);
+  Database.Initialize(target_db);
 
   // Start server on specified port.
   app.listen(port, () => {
@@ -70,6 +71,6 @@ function RegisterRoutes(app) {
     console.log("Use Ctrl + C to end the process."); 
   });
 
-})(env, app, port);
+})(env, app, port, target_db);
 
 
