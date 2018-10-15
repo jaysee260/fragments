@@ -94,16 +94,24 @@ function FragmentsController(router) {
    * @description
    * Returns fragments by tag(s)
    */
-  router.get("/tags/:tag", async (req, res) => {
+  router.get("/tags/:tags", async (req, res) => {
 
-    let { tag } = req.params;
-    tag = tag.trim();
+    let { tags } = req.params;
+
+    // If there's more that one tag, split them
+    if (tags.indexOf("&") != -1) {
+      tags = tags.split("&");
+    } else {
+      tags = tags.trim();
+    }
     
-    if (tag) {
+    // res.status(200).send(tags);
+    
+    if (tags) {
       
       try {
 
-        let query = { "tags": { "$in": [ tag ] } };
+        let query = { "tags": { "$in": Array.isArray(tags) ? tags : [ tags ] } };
         /** @todo
          * construct a response suitable to results.
          * if none found, make that clear.
@@ -111,9 +119,16 @@ function FragmentsController(router) {
          */
         let result = await Fragment.find(query);
         if (result.length != 0) {
-          res.status(200).json(result);
+          res.status(200).json({
+            status: "OK",
+            count: result.length,
+            result
+          });
         } else {
-          res.status(404).json(result);
+          res.status(404).json({
+            status: "NOT FOUND",
+            message: "Found no results matching the specified criteria."
+          });
         }
 
       } catch (error) {
@@ -128,8 +143,8 @@ function FragmentsController(router) {
       }
 
     } else {
-      console.log(tag);
-      res.status(500).send("please provide a tag");
+      console.log(tags);
+      res.status(500).send("please provide a tags");
     }
 
   });
