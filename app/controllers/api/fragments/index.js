@@ -79,13 +79,59 @@ function FragmentsController(router) {
   
   /**
    * @method GET
-   * @name /api/:fragment_id
+   * @name /api/fragments/:fragment_id
    * @description
    * Finds and returns a single fragment by _id.
    */
   router.get("/:fragment_id", async (req, res) => {
     // check for _id
     // do stuff
+  });
+
+  /**
+   * @method GET
+   * @name /api/fragments/tags/:tag
+   * @description
+   * Returns fragments by tag(s)
+   */
+  router.get("/tags/:tag", async (req, res) => {
+
+    let { tag } = req.params;
+    tag = tag.trim();
+    
+    if (tag) {
+      
+      try {
+
+        let query = { "tags": { "$in": [ tag ] } };
+        /** @todo
+         * construct a response suitable to results.
+         * if none found, make that clear.
+         * if N found, make that clear.
+         */
+        let result = await Fragment.find(query);
+        if (result.length != 0) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json(result);
+        }
+
+      } catch (error) {
+
+        let msg = "Something went wrong; Unable to fulfill request."
+        console.log(msg);
+        res.status(500).json({
+          msg,
+          error
+        });
+
+      }
+
+    } else {
+      console.log(tag);
+      res.status(500).send("please provide a tag");
+    }
+
   });
   
   /**
