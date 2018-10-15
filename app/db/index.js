@@ -3,11 +3,11 @@ const { db:dbKeys } = require("../../app.config.json");
 
 const Database = {};
 
-Database.Initialize = function(env = "dev") {
+Database.Initialize = function(target_db) {
   mongoose.Promise = global.Promise;
 
   const options = { useNewUrlParser: true };
-  const { connectionString } = env == "dev" ? dbKeys.local : dbKeys.remote;
+  const { connectionString } = target_db == "dev" ? dbKeys.local : dbKeys.remote;
   
   mongoose.connect(connectionString, options);
   const db = mongoose.connection;
@@ -18,7 +18,7 @@ Database.Initialize = function(env = "dev") {
   });
 
   db.once("open", function() {
-    console.log("Connection to %s database successful.", env == "dev" ? "local" : "remote");
+    console.log("Connection to %s database successful.", target_db == "dev" ? "local" : "remote");
   })
   
 }
