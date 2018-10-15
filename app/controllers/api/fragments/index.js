@@ -98,26 +98,20 @@ function FragmentsController(router) {
 
     let { tags } = req.params;
 
-    // If there's more that one tag, split them
+    // If there's more that one tag, split them into an Array.
     if (tags.indexOf("&") != -1) {
       tags = tags.split("&");
     } else {
       tags = tags.trim();
     }
     
-    // res.status(200).send(tags);
-    
     if (tags) {
       
       try {
 
         let query = { "tags": { "$in": Array.isArray(tags) ? tags : [ tags ] } };
-        /** @todo
-         * construct a response suitable to results.
-         * if none found, make that clear.
-         * if N found, make that clear.
-         */
         let result = await Fragment.find(query);
+        
         if (result.length != 0) {
           res.status(200).json({
             status: "OK",
