@@ -138,7 +138,7 @@ function FragmentsController(router) {
 
     } else {
       console.log(tags);
-      res.status(500).send("please provide a tags");
+      res.status(500).send("Must provide at least one tag");
     }
 
   });
