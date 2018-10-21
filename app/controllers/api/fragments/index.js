@@ -146,7 +146,15 @@ function FragmentsController(router) {
 
   });
 
-  
+  router.get("/all/tags", async (req, res) => {
+    try {
+      var tags = await Fragment.distinct("tags");
+      res.status(200).json({ tags });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ msg: "Something went wrong..." })
+    }
+  });
   
   /**
    * @method POST
