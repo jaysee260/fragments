@@ -43,18 +43,22 @@
 
   <main class="container is-fluid">
     
-    <section class="section">
-
+    <section class="section is-centered">
       <div class="field has-addons">
         <div class="control">
           <input type="text" class="input" placeholder="Separate them with commas">
         </div>
         <div class="control">
-          <a href="#" class="button is-info">
+          <a href="#" class="button is-info"
+            onclick="getFragmentsByTags(this.parentNode.parentNode.firstElementChild.firstElementChild.value)"
+          >
             Search by Tag
           </a>
         </div>
       </div>
+    </section>
+
+    <section class="section">
 
       <table class="table" id="fragments-table">
 
@@ -75,6 +79,38 @@
   </main>
 
   <script src="./js/index.js"></script>
+  <script>
+    async function getFragmentsByTags(tags) {
+      if (!tags) return;
+
+      if ( tags.indexOf(" ") > -1 ) {
+        tags = tags.replace(/\s/g, "");
+      }
+
+      tags = tags.split(",");
+      tags = encodeURIComponent(tags);
+      // console.log(tags);
+
+      try {
+        var settings = {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        };
+        var response = await fetch(`/api/fragments/tags/${tags}`, settings);
+        var responseContent  = await response.json();
+        var tags = responseContent.tags;
+        console.log(tags);
+        
+      } catch (error) {
+        
+        console.log(error);
+
+      }
+    }
+  </script>
   
 </body>
 </html>

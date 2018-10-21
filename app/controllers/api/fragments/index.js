@@ -97,51 +97,56 @@ function FragmentsController(router) {
   router.get("/tags/:tags", async (req, res) => {
 
     let { tags } = req.params;
+    tags = tags.trim().split(',');
+    
+    res.json({ tags });
 
     // If there's more that one tag, split them into an Array.
-    if (tags.indexOf("&") != -1) {
-      tags = tags.split("&");
-    } else {
-      tags = tags.trim();
-    }
+    // if (tags.indexOf("&") != -1) {
+    //   tags = tags.split("&");
+    // } else {
+    //   tags = tags.trim();
+    // }
     
-    if (tags) {
+    // if (tags) {
       
-      try {
+    //   try {
 
-        let query = { "tags": { "$in": Array.isArray(tags) ? tags : [ tags ] } };
-        let result = await Fragment.find(query);
+    //     let query = { "tags": { "$in": Array.isArray(tags) ? tags : [ tags ] } };
+    //     let result = await Fragment.find(query);
         
-        if (result.length != 0) {
-          res.status(200).json({
-            status: "OK",
-            count: result.length,
-            result
-          });
-        } else {
-          res.status(404).json({
-            status: "NOT FOUND",
-            message: "Found no results matching the specified criteria."
-          });
-        }
+    //     if (result.length != 0) {
+    //       res.status(200).json({
+    //         status: "OK",
+    //         count: result.length,
+    //         result
+    //       });
+    //     } else {
+    //       res.status(404).json({
+    //         status: "NOT FOUND",
+    //         message: "Found no results matching the specified criteria."
+    //       });
+    //     }
 
-      } catch (error) {
+    //   } catch (error) {
 
-        let msg = "Something went wrong; Unable to fulfill request."
-        console.log(msg);
-        res.status(500).json({
-          msg,
-          error
-        });
+    //     let msg = "Something went wrong; Unable to fulfill request."
+    //     console.log(msg);
+    //     res.status(500).json({
+    //       msg,
+    //       error
+    //     });
 
-      }
+    //   }
 
-    } else {
-      console.log(tags);
-      res.status(500).send("Must provide at least one tag");
-    }
+    // } else {
+    //   console.log(tags);
+    //   res.status(500).send("Must provide at least one tag");
+    // }
 
   });
+
+  
   
   /**
    * @method POST

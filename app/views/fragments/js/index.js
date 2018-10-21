@@ -1,5 +1,4 @@
 (async function() {
-
     // TODO
     // Use localstorage to cache fragments returned
     // from server in order to speed up table re-rendering
