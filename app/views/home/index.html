@@ -153,7 +153,7 @@
       console.log(input);
       
       const waitTimeInMs = 300;
-      const thereIsNewTag = new RegExp( "((\\w{0,}\\-?\\s?\\.?\\w+?\\s?)+),$" );
+      const tagSuggestionRegExp = new RegExp( ",?\\s?(\\w{0,}-?\\s?\\.?\\w+?)+\\s?,?$" );
 
       function getAllTags() {
         var settings = {
@@ -200,12 +200,13 @@
           
         }
           
-        
+        // input = autoSuggestRegex.test
         const autoSuggestRegex = new RegExp(`^${input}`);
         
         var suggestions = [];
         tags.forEach((tag, index) => {
           if ( autoSuggestRegex.test(tag) ) suggestions.push(tag);
+          // if ( thereIsNewTag.test() )
         });
         // if suggestions.length = 0 do nothing
         if (suggestions.length == 0) {
