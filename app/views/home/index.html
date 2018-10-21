@@ -148,6 +148,12 @@
     }
 
     function autoSuggestTags(input) {
+      function parseInput(str) {
+        let condition = new RegExp( ",?\\s?((\\w{0,}\\-?|\\s?\\.?\\w+?\\s?)+)$" );
+        let match = condition.exec(str);
+        return match ? match[1] : null;
+      }
+      input = parseInput(input);
       // Exit if there's no input.
       if (!input.trim()) return;
       console.log(input);
@@ -201,6 +207,8 @@
         }
           
         // input = autoSuggestRegex.test
+        console.log(input);
+        
         const autoSuggestRegex = new RegExp(`^${input}`);
         
         var suggestions = [];
