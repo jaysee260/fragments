@@ -114,6 +114,13 @@
 
       <div class="columns is-centered">
         <div class="column is-half">
+          <button class="button is-warning"
+                  onclick="clearTagsCache()"
+          >
+            Clear Tags Cache
+          </button>
+        </div>
+        <div class="column is-half">
           <div class="notification is-success has-text-centered is-size-5">
             <p>Fragment saved</p>
           </div>
@@ -130,6 +137,15 @@
 
   <script src="./js/index.js"></script>
   <script>
+    function clearTagsCache() {
+      if ('tags' in localStorage) {
+        localStorage.removeItem('tags');
+        console.info('tags cache cleared'.toUpperCase());
+        return;
+      } 
+      console.info("nothing to clear".toUpperCase());
+    }
+
     function autoSuggestTags(input) {
       if (!input.trim()) return;
       console.log(input);
@@ -151,38 +167,55 @@
 
       setTimeout(async function() {
         var tags;
-        try {
 
-          let response = await getAllTags();
-          let content = await response.json();
-          tags = content.tags;
-          // TODO: use local storage as cache for tags.
-          //       update cache on pageload and each time
-          //       a fragment is saved (could mean a new tag).
-          //       OR, only update on fragment save if a new tag
-          //       is added (chech against cache).
+        if ("tags" in localStorage) {
 
-          // on first call, cache results in local storage.
-          // on subsequent calls, check for existance of tags in
-          // localstorage; if none, hit API. otherwise, retrieve from cache
-          // if (!("tags" in localStorage)) {
-          //   console.log("no tags in localStorage; requesting from API..");
-          //   console.log("tags retrieved; storing in localStorage...");
-          //   let response = await getAllTags();
-          //   let content = await response.json();
-          //   tags = content.tags;
+          console.log("retrieving tags from localstorage...");
+          tags = localStorage.getItem("tags").split(',');
 
-          //   localStorage.setItem("tags", tags);
-            
-          // } else {
-          //   console.log("tags found in localStorage...");
-          //   tags = localStorage.getItem("tags").split(",");            
-          // }
+        } else {
+          console.log("fetching tags from API...");
+          console.log("calling API...");
           
-        } catch (error) {
-          console.log(error);
+          try {
+            
+            let response = await getAllTags();
+            let content = await response.json();
+
+            tags = content.tags;
+            localStorage.setItem("tags", tags);
+            // TODO: use local storage as cache for tags.
+            //       update cache on pageload and each time
+            //       a fragment is saved (could mean a new tag).
+            //       OR, only update on fragment save if a new tag
+            //       is added (chech against cache).
+    
+            // on first call, cache results in local storage.
+            // on subsequent calls, check for existance of tags in
+            // localstorage; if none, hit API. otherwise, retrieve from cache
+            // if (!("tags" in localStorage)) {
+            //   console.log("no tags in localStorage; requesting from API..");
+            //   console.log("tags retrieved; storing in localStorage...");
+            //   let response = await getAllTags();
+            //   let content = await response.json();
+            //   tags = content.tags;
+    
+            //   localStorage.setItem("tags", tags);
+              
+            // } else {
+            //   console.log("tags found in localStorage...");
+            //   tags = localStorage.getItem("tags").split(",");            
+            // }
+            
+          } catch (error) {
+
+            console.log(error);
+            
+          }
           
         }
+          
+    
         
         const generateRegEx = str => new RegExp(`^${str}`);
         const autoSuggestRegex = generateRegEx(input);
