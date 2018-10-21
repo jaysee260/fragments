@@ -137,6 +137,7 @@
 
   <script src="./js/index.js"></script>
   <script>
+    
     function clearTagsCache() {
       if ('tags' in localStorage) {
         localStorage.removeItem('tags');
@@ -147,11 +148,12 @@
     }
 
     function autoSuggestTags(input) {
+      // Exit if there's no input.
       if (!input.trim()) return;
       console.log(input);
       
-
       const waitTimeInMs = 300;
+      const thereIsNewTag = new RegExp( "((\\w{0,}\\-?\\s?\\.?\\w+?\\s?)+),$" );
 
       function getAllTags() {
         var settings = {
@@ -189,23 +191,6 @@
             //       a fragment is saved (could mean a new tag).
             //       OR, only update on fragment save if a new tag
             //       is added (chech against cache).
-    
-            // on first call, cache results in local storage.
-            // on subsequent calls, check for existance of tags in
-            // localstorage; if none, hit API. otherwise, retrieve from cache
-            // if (!("tags" in localStorage)) {
-            //   console.log("no tags in localStorage; requesting from API..");
-            //   console.log("tags retrieved; storing in localStorage...");
-            //   let response = await getAllTags();
-            //   let content = await response.json();
-            //   tags = content.tags;
-    
-            //   localStorage.setItem("tags", tags);
-              
-            // } else {
-            //   console.log("tags found in localStorage...");
-            //   tags = localStorage.getItem("tags").split(",");            
-            // }
             
           } catch (error) {
 
