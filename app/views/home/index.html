@@ -89,13 +89,11 @@
             <div class="field">
               <label class="label">Tags</label>
               <div class="control">
-                <input list="tag-suggestions" type="text" class="input" id="tags" placeholder="separate tags with commas"
-                  oninput="autoSuggestTags(this.value)"
-                  onblur="clearTagSuggestions()"
-                >
-                <!-- populate this data list and have it appear ONLY
-                when there are suggestions. otherwise, keep hidden. -->
-                <datalist id="tag-suggestions"></datalist>
+                <span id="parsed-tags">
+                  <input type="text" class="input" id="tags" placeholder="separate tags with commas"
+                    oninput="parseInputToTags(this.value);"
+                  >
+                </span>
               </div>
             </div>
     
@@ -130,102 +128,33 @@
 
   <script src="./js/index.js"></script>
   <script>
-    function autoSuggestTags(input) {
-      if (!input.trim()) return;
-      console.log(input);
-      
-
-      const waitTimeInMs = 300;
-
-      function getAllTags() {
-        var settings = {
-          method: "GET",
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
-        };
-
-        return fetch("/api/fragments/all/tags", settings);
+    function parseInputToTags(input) {
+      // TODO: explain RegExp
+      const thereIsNewTag = new RegExp( "((\\w{0,}\\-?\\s?\\.?\\w+?\\s?)+),$" );
+      if ( thereIsNewTag.test(input) ) {
+        // parse tag text
+        var match = thereIsNewTag.exec(input);
+        match = match[1];
+        console.log(match);
+        // make new tag and set text.
+        var tag = document.createElement("SPAN");
+        tag.setAttribute("class", "tag is-link");
+        tag.innerText = match;
+        tag.setAttribute("id", Date.now())
+        // add tag delete button
+        var tagDeleteBtn = document.createElement("A");
+        tagDeleteBtn.setAttribute("class", "delete is-small");
+        tagDeleteBtn.addEventListener("click", (event) => removeElement(event.target.parentNode.id) );
+        tag.appendChild(tagDeleteBtn);
+        // Display new tag
+        var parsedTags = document.getElementById("parsed-tags");
+        parsedTags.appendChild(tag);
       }
-
-      setTimeout(async function() {
-        var tags;
-        try {
-
-          let response = await getAllTags();
-          let content = await response.json();
-          tags = content.tags;
-          // TODO: use local storage as cache for tags.
-          //       update cache on pageload and each time
-          //       a fragment is saved (could mean a new tag).
-          //       OR, only update on fragment save if a new tag
-          //       is added (chech against cache).
-
-          // on first call, cache results in local storage.
-          // on subsequent calls, check for existance of tags in
-          // localstorage; if none, hit API. otherwise, retrieve from cache
-          // if (!("tags" in localStorage)) {
-          //   console.log("no tags in localStorage; requesting from API..");
-          //   console.log("tags retrieved; storing in localStorage...");
-          //   let response = await getAllTags();
-          //   let content = await response.json();
-          //   tags = content.tags;
-
-          //   localStorage.setItem("tags", tags);
-            
-          // } else {
-          //   console.log("tags found in localStorage...");
-          //   tags = localStorage.getItem("tags").split(",");            
-          // }
-          
-        } catch (error) {
-          console.log(error);
-          
-        }
-        
-        const generateRegEx = str => new RegExp(`^${str}`);
-        const autoSuggestRegex = generateRegEx(input);
-        
-        var suggestions = [];
-        tags.forEach((tag, index) => {
-          if ( autoSuggestRegex.test(tag) ) suggestions.push(tag);
-        });
-        // if suggestions.length = 0 do nothing
-        if (suggestions.length == 0) {
-          return;
-        } else {
-          // make an option element for each suggestion and append
-          // it AS A WHOLE 
-          console.log(suggestions);
-          let suggestionOptions = suggestions.map((elem, index) => {
-            let option = document.createElement("OPTION");
-            option.setAttribute("value", elem);
-            option.setAttribute("id", index+1);
-            // add onclick event to append to input
-            return option;
-          });
-
-          console.log(suggestionOptions);
-          const tagSuggestionsList = document.getElementById("tag-suggestions");
-          if (tagSuggestionsList.childElementCount != 0)
-            tagSuggestionsList.innerHTML = '';
-          
-          suggestionOptions.forEach(option => {
-            tagSuggestionsList.appendChild(option);
-          });
-          
-        }
-
-      }, waitTimeInMs);
-      
     }
 
-    function clearTagSuggestions() {
-      const tagSuggestionList = document.getElementById('tag-suggestions');
-      if (tagSuggestionList.childElementCount != 0) {
-        tagSuggestionList.innerHTML = '';
-      }
+    function removeElement(elementId) {
+      var element = document.getElementById(elementId);
+      element.parentNode.removeChild(element);
     }
   </script>
 </body>
